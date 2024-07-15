@@ -11,10 +11,10 @@ public class RectangleObject extends AbstractGraphicObject {
     private Dimension2D dimension;
 
 
-    public RectangleObject(Point2D position, double width, double height) {
+    public RectangleObject(String id, Point2D position, double width, double height) {
+        super(id);
         if (width <= 0 || height <= 0)
             throw new IllegalArgumentException();
-        //this.id = id;
         this.dimension = new Dimension();
         this.dimension.setSize(width, height);
         this.position = new Point2D.Double(position.getX(), position.getY());

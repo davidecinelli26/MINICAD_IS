@@ -6,6 +6,21 @@ import java.util.List;
 public abstract class AbstractGraphicObject implements GraphicObject {
 
     private List<GraphicObjectListener> listeners = new LinkedList<>();
+    private String id;
+
+    public AbstractGraphicObject(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
 
     @Override
     public void addGraphicObjectListener(GraphicObjectListener listener) {

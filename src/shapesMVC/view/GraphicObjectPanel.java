@@ -6,34 +6,33 @@ import shapesMVC.model.GraphicObjectListener;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class GraphicObjectPanel extends JComponent implements GraphicObjectListener {
 
     private static final long serialVersionUID = -8785390858215868800L;
 
+    private static GraphicObjectPanel instance;
+    private final Map<String, GraphicObject> graphicObjects;
     private static int id = 0;
 
-    private final Map<String, GraphicObject> graphicObjects = new HashMap<>();
-
-    public GraphicObjectPanel() {
+    private GraphicObjectPanel() {
+        graphicObjects = new HashMap<>();
         setBackground(Color.WHITE);
+    }
+
+    public static synchronized GraphicObjectPanel getInstance() {
+        if (instance == null) {
+            instance = new GraphicObjectPanel();
+        }
+        return instance;
     }
 
     @Override
     public void graphicObjectChanged(GraphicObjectEvent e) {
         repaint();
         revalidate();
-    }
-
-    public GraphicObject getGraphicObjectAt(Point2D point) {
-        for (GraphicObject g: graphicObjects.values())
-            if (g.contains(point))
-                return g;
-        return null;
     }
 
     public Dimension getPreferredSize() {
@@ -60,14 +59,20 @@ public class GraphicObjectPanel extends JComponent implements GraphicObjectListe
         }
     }
 
-    public void add(GraphicObject go) {
-        graphicObjects.put("obj" + id, go);
+    public String generateNextObjectId() {
+        String id_s = "obj" + id;
         id++;
+        return id_s;
+    }
+
+    public void add(GraphicObject go) {
+        graphicObjects.put(go.getId(), go);
         go.addGraphicObjectListener(this);
         repaint();
     }
 
     public void remove(GraphicObject go) {
+        /*
         Iterator<Map.Entry<String, GraphicObject>> iterator = graphicObjects.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<String, GraphicObject> entry = iterator.next();
@@ -78,6 +83,14 @@ public class GraphicObjectPanel extends JComponent implements GraphicObjectListe
                 break;
             }
         }
+        */
+        graphicObjects.remove(go.getId());
+        repaint();
+        go.removeGraphicObjectListener(this);
+    }
+
+    public GraphicObject getObject(String id) {
+        return getGraphicObjects().get(id);
     }
 
     public Map<String, GraphicObject> getGraphicObjects() {

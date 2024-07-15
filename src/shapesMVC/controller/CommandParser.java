@@ -10,6 +10,7 @@ import shapesMVC.view.GraphicObjectPanel;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class CommandParser {
@@ -27,23 +28,22 @@ public class CommandParser {
             case "new":
                 return new CreateCommand(panel, parseType(tokens));
             case "del":
-                GraphicObject go_del = panel.getGraphicObjects().get(tokens[1]);
-                return new DeleteCommand(panel, go_del);
+                return new DeleteCommand(panel, tokens[1]);
             case "mv":
-                GraphicObject go_mv = panel.getGraphicObjects().get(tokens[1]);
-                return new MoveCommand(go_mv, parsePosition(tokens[2]), false);
+                return new MoveCommand(tokens[1], parsePosition(tokens[2]), false);
             case "mvoff":
-                GraphicObject go_mvoff = panel.getGraphicObjects().get(tokens[1]);
-                return new MoveCommand(go_mvoff, parsePosition(tokens[2]), true);
+                return new MoveCommand(tokens[1], parsePosition(tokens[2]), true);
             case "scale":
                 GraphicObject go_scale = panel.getGraphicObjects().get(tokens[1]);
                 return new ScaleCommand(go_scale, Double.parseDouble(tokens[2]));
             case "ls":
-                GraphicObject go_ls = panel.getGraphicObjects().get(tokens[1]);
-                return new ListCommand(go_ls);
-                /*
+                return new ListCommand(tokens[1]);
             case "grp":
-                return new GroupCommand();
+                LinkedList <GraphicObject> objects = new LinkedList<>();
+                for (int i = 1; i < tokens.length; i++)
+                    objects.add(panel.getGraphicObjects().get(tokens[i]));
+                return new GroupCommand(objects);
+                /*
             case "ungrp":
                 return new UngroupCommand();
                  */
@@ -62,17 +62,20 @@ public class CommandParser {
         String type = tokens[1];
         switch (type) {
             case "circle":
+                String id_c = panel.generateNextObjectId();
                 double radius = Double.parseDouble(tokens[2].substring(1, tokens[2].length()-1));
                 Point2D circle_center = parsePosition(tokens[3]);
-                return new CircleObject(circle_center, radius);
+                return new CircleObject(id_c, circle_center, radius);
             case "rectangle":
+                String id_r = panel.generateNextObjectId();
                 Point2D rectangle_center = parsePosition(tokens[2]);
                 Point2D rectangle_dimension = parsePosition(tokens[3]);
-                return new RectangleObject(rectangle_center, rectangle_dimension.getX(), rectangle_dimension.getY());
+                return new RectangleObject(id_r, rectangle_center, rectangle_dimension.getX(), rectangle_dimension.getY());
             case "image":
+                String id_i = panel.generateNextObjectId();
                 String path = tokens[2].substring(1, tokens[2].length()-1);
                 Point2D image_center = parsePosition(tokens[3]);
-                return new ImageObject(path, image_center);
+                return new ImageObject(id_i, path, image_center);
             default:
                 throw new IllegalArgumentException("Invalid type");
         }

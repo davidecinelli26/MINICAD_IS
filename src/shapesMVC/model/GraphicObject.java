@@ -5,6 +5,10 @@ import java.awt.geom.Point2D;
 
 public interface GraphicObject {
 
+    String getId();
+
+    void setId(String id);
+
     void addGraphicObjectListener(GraphicObjectListener listener);
 
     void removeGraphicObjectListener(GraphicObjectListener listener);

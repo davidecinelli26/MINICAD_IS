@@ -17,7 +17,6 @@ public class CommandInterpreter {
     }
 
     public void executeCommand(String input) {
-        System.out.println(input);
         CommandParser parser = new CommandParser(panel);
         Command command = parser.parse(input);
         commandHandler.handle(command);

@@ -10,12 +10,10 @@ public class CircleObject extends AbstractGraphicObject {
 
     private double radius;
 
-    //private String id;
-
-    public CircleObject(Point2D position, double radius) {
+    public CircleObject(String id, Point2D position, double radius) {
+        super(id);
         if (radius <= 0)
             throw new IllegalArgumentException();
-        //this.id = id;
         this.position = position;
         this.radius = radius;
     }

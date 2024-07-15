@@ -16,7 +16,7 @@ public class Test {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(900,900);
 
-        GraphicObjectPanel panel = new GraphicObjectPanel();
+        GraphicObjectPanel panel = GraphicObjectPanel.getInstance();
         frame.add(panel);
         CommandHandler commandHandler = new NaiveCommandHandler();
         CommandInterpreter interpreter = new CommandInterpreter(commandHandler, panel);

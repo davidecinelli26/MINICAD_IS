@@ -13,8 +13,9 @@ public class ImageObject extends AbstractGraphicObject {
 
     private Point2D position;
 
-    public ImageObject(String path, Point2D position)
+    public ImageObject(String id, String path, Point2D position)
     {
+        super(id);
         this.position = new Point2D.Double(position.getX(), position.getY());
         this.image = new ImageIcon(path).getImage();
     }
