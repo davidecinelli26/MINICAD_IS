@@ -1,7 +1,7 @@
 package command;
 
 public interface Command {
-	boolean doIt();
+    boolean execute();
 
-	boolean undoIt();
+    boolean undo();
 }
